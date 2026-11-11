@@ -1,0 +1,106 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سفر رو | درخواست سفر</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial;background:#f3f6fa;color:#202b3c}
+header{background:#126b55;color:white;padding:24px 18px;text-align:center}
+header h1{margin:0 0 8px;font-size:30px}
+header p{margin:0}
+main{max-width:600px;margin:20px auto;padding:0 14px}
+.card{background:white;padding:20px;margin-bottom:16px;border-radius:16px;box-shadow:0 3px 14px #0000000b}
+h2{font-size:18px;margin-top:0}
+label{display:block;margin:15px 0 7px}
+input,select{width:100%;padding:12px;border:1px solid #d4dce5;border-radius:9px;font:inherit;background:white}
+.check{display:flex;align-items:center;gap:9px;margin:15px 0}
+.check input{width:18px;height:18px}
+button{width:100%;padding:14px;border:0;border-radius:10px;background:#126b55;color:white;font:inherit;font-weight:bold;cursor:pointer;margin-top:10px}
+.secondary{background:#e6f2ee;color:#126b55}
+#result{display:none;line-height:2}
+.price{font-size:23px;color:#126b55;font-weight:bold}
+footer{text-align:center;color:#697586;font-size:12px;padding:18px}
+</style>
+</head>
+<body>
+<header>
+<h1>سفر رو</h1>
+<p>سفر آسان، امن و مطمئن</p>
+</header>
+<main>
+<section class="card">
+<h2>درخواست سفر</h2>
+<label for="origin">مبدأ سفر</label>
+<input id="origin" placeholder="مثلاً میدان مرکزی یاسوج">
+<label for="destination">مقصد سفر</label>
+<input id="destination" placeholder="آدرس مقصد را وارد کنید">
+<label for="distance">مسافت تقریبی (کیلومتر)</label>
+<input id="distance" type="number" min="1" placeholder="مثلاً 8">
+<label for="passengers">تعداد مسافران</label>
+<select id="passengers">
+<option value="1">۱ نفر</option>
+<option value="2">۲ نفر</option>
+<option value="3">۳ نفر</option>
+<option value="4">۴ نفر</option>
+</select>
+<label for="vehicle">نوع سرویس</label>
+<select id="vehicle">
+<option>خودروی سواری</option>
+<option>وانت و حمل وسیله</option>
+</select>
+<label class="check"><input id="luggage" type="checkbox"> وسیلهٔ همراه دارم (۵٪ افزایش کرایهٔ پایه)</label>
+<label class="check"><input id="disability" type="checkbox"> مسافر دارای معلولیت است</label>
+<label class="check"><input id="wheelchair" type="checkbox"> ویلچر همراه مسافر است</label>
+<label class="check"><input id="traffic" type="checkbox"> مسیر شامل طرح ترافیک است</label>
+<button onclick="calculate()">محاسبه و مشاهدهٔ برآورد</button>
+</section>
+
+<section class="card" id="result">
+<h2>برآورد سفر شما</h2>
+<div id="details"></div>
+<p>کرایهٔ نمایش‌داده‌شده نمونه و آزمایشی است؛ تعرفهٔ رسمی باید پیش از بهره‌برداری تأیید و تنظیم شود.</p>
+<button onclick="acceptTrip()">تأیید درخواست آزمایشی</button>
+<button class="secondary" onclick="openMap()">نمایش مسیر در نشان</button>
+<p id="status"></p>
+</section>
+</main>
+<footer>سفر رو | نسخهٔ آزمایشی اولیه</footer>
+<script>
+let estimate=0;
+function calculate(){
+ const a=document.getElementById('origin').value.trim();
+ const b=document.getElementById('destination').value.trim();
+ const km=Number(document.getElementById('distance').value);
+ if(!a!b!km||km<=0){alert('لطفاً مبدأ، مقصد و مسافت را وارد کنید.');return;}
+ const rate=10000;
+ const base=km*rate;
+ const extra=document.getElementById('luggage').checked?base*.05:0;
+ estimate=base+extra;
+ document.getElementById('details').innerHTML=
+ 'مبدأ: '+a+'<br>مقصد: '+b+
+ '<br>مسافت تقریبی: '+km+' کیلومتر'+
+ '<br>تعداد مسافران: '+document.getElementById('passengers').value+
+ '<br>وسیلهٔ همراه: '+(extra?'بله، ۵٪ اضافه شده':'خیر')+
+ '<br>معلولیت: '+(document.getElementById('disability').checked?'بله':'خیر')+
+ '<br>ویلچر: '+(document.getElementById('wheelchair').checked?'بله':'خیر')+'<p class="price">برآورد آزمایشی: '+Math.round(estimate).toLocaleString('fa-IR')+' تومان</p>';
+ document.getElementById('result').style.display='block';
+ document.getElementById('status').textContent='';
+}
+function acceptTrip(){
+ document.getElementById('status').textContent=
+ 'درخواست در این نسخه فقط به‌صورت آزمایشی ثبت شد؛ هنوز رانندهٔ واقعی متصل نیست.';
+}
+function openMap(){
+ const a=document.getElementById('origin').value.trim();
+ const b=document.getElementById('destination').value.trim();
+ if(!a||!b){alert('ابتدا مبدأ و مقصد را وارد کنید.');return;}
+ window.open('https://neshan.org/maps','_blank');
+}
+</script>
+</body>
+</html>
+ '<br>طرح ترافیک: '+(document.getElementById('traffic').checked?'بله؛ هزینه نیازمند تعیین تعرفه است':'خیر')+
