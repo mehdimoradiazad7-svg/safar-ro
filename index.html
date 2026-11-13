@@ -80,4 +80,33 @@ window.open('https://neshan.org/maps?destination='+encodeURIComponent(trip.b)+'&
 };
 </script>
 </body>
+HTML
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach(function (button) {
+    if (button.textContent.includes("برآورد")) {
+      button.type = "button";
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        const inputs = document.querySelectorAll("input");
+        const distance = Number(inputs[2]?.value);
+        const result = document.getElementById("result");
+        if (!distance || distance <= 0) {
+          alert("لطفاً مسافت را به کیلومتر وارد کنید.");
+          return;
+        }
+        if (result) {
+          result.textContent = "برآورد آزمایشی کرایه: " +
+            (distance * 10000).toLocaleString("fa-IR") + " تومان";
+          result.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          alert("بخش نمایش قیمت پیدا نشد. باید کد را دقیق‌تر تنظیم کنیم.");
+        }
+      });
+    }
+  });
+});
+</script>
 </html>
