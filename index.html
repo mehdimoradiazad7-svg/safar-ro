@@ -1,94 +1,83 @@
-const form = document.getElementById("tripForm");
-const resultSection = document.getElementById("result");
-const details = document.getElementById("details");
-const statusText = document.getElementById("status");
+HTML
 
-function formatToman(amount) {
-  return Math.round(amount).toLocaleString("fa-IR") + " تومان";
-}
-
-form.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const origin = document.getElementById("origin").value.trim();
-  const destination = document.getElementById("destination").value.trim();
-  const km = Number(document.getElementById("distance").value);
-
-  if (!origin  !destination  !Number.isFinite(km) || km <= 0) {
-    alert("لطفاً مبدأ، مقصد و مسافت معتبر را وارد کنید.");
-    return;
-  }
-
-  const passengers = document.getElementById("passengers").value;
-  const vehicle = document.getElementById("vehicle").value;
-  const hasLuggage = document.getElementById("luggage").checked;
-  const disability = document.getElementById("disability").checked;
-  const wheelchair = document.getElementById("wheelchair").checked;
-  const traffic = document.getElementById("traffic").checked;
-
-  const base = km * DEMO_RATE_PER_KM;
-  const luggageExtra = hasLuggage ? base * 0.05 : 0;
-  const estimate = base + luggageExtra;
-
-  latestTrip = {
-    origin, destination, km, passengers, vehicle,
-    hasLuggage, disability, wheelchair, traffic, estimate
-  };
-
-  const rows = [
-    ["مبدأ", origin],
-    ["مقصد", destination],
-    ["مسافت تقریبی", km.toLocaleString("fa-IR") + " کیلومتر"],
-    ["تعداد مسافران", passengers + " نفر"],
-    ["نوع سرویس", vehicle === "pickup" ? "وانت و حمل وسیله" : "خودروی سواری"],
-    ["وسیلهٔ همراه", hasLuggage ? "بله؛ ۵٪ اضافه شده" : "خیر"],
-    ["معلولیت", disability ? "بله" : "خیر"],
-    ["ویلچر", wheelchair ? "بله" : "خیر"],
-    ["طرح ترافیک", traffic ? "بله؛ هزینه جداگانه محاسبه نشده" : "خیر"],
-    ["کرایهٔ پایهٔ آزمایشی", formatToman(base)],
-    ["افزایش وسیلهٔ همراه", formatToman(luggageExtra)]
-  ];
-
-  details.replaceChildren();
-
-  rows.forEach(function(row) {
-    const p = document.createElement("p");
-    p.textContent = row[0] + ": " + row[1];
-    details.appendChild(p);
-  });
-
-  const price = document.createElement("p");
-  price.className = "price";
-  price.textContent = "برآورد آزمایشی: " + formatToman(estimate);
-  details.appendChild(price);
-
-  resultSection.style.display = "block";
-  statusText.textContent = "";
-  resultSection.scrollIntoView({behavior:"smooth", block:"start"});
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سفر رو</title>
+<style>
+body{font-family:Tahoma;background:#f3f6fa;color:#202b3c;margin:0;line-height:2}
+header{background:#126b55;color:white;text-align:center;padding:20px}
+main{max-width:600px;margin:20px auto;padding:12px}
+section{background:white;padding:18px;margin-bottom:15px;border-radius:14px}
+label{display:block;margin-top:12px}
+input,select,button{box-sizing:border-box;width:100%;padding:12px;margin-top:6px;font:inherit;border-radius:8px;border:1px solid #ddd}
+.check{display:flex;align-items:center;gap:8px}
+.check input{width:auto}
+button{background:#126b55;color:white;border:0;cursor:pointer}
+#result{display:none}
+.price{font-size:22px;color:#126b55;font-weight:bold}
+small{color:#666}
+</style>
+</head>
+<body>
+<header><h1>سفر رو</h1><div>سفر آسان، امن و مطمئن</div></header>
+<main>
+<section>
+<h3>درخواست سفر</h3>
+<form id="trip">
+<label>مبدأ</label><input id="a" required placeholder="مبدأ سفر">
+<label>مقصد</label><input id="b" required placeholder="مقصد سفر">
+<label>مسافت تقریبی به کیلومتر</label><input id="km" type="number" min="0.1" step="0.1" required>
+<label>تعداد مسافران</label>
+<select id="people"><option>۱</option><option>۲</option><option>۳</option><option>۴</option></select>
+<label>نوع سرویس</label>
+<select id="car"><option value="سواری">خودروی سواری</option><option value="وانت">وانت و حمل وسیله</option></select>
+<label class="check"><input id="bag" type="checkbox"> وسیلهٔ همراه؛ ۵٪ افزایش کرایه</label>
+<label class="check"><input id="dis" type="checkbox"> مسافر دارای معلولیت است</label>
+<label class="check"><input id="wheel" type="checkbox"> ویلچر همراه مسافر است</label>
+<label class="check"><input id="traffic" type="checkbox"> مسیر شامل طرح ترافیک است</label>
+<button>محاسبهٔ کرایهٔ آزمایشی</button>
+</form>
+</section>
+<section id="result">
+<h3>برآورد سفر</h3><div id="details"></div>
+<p><small>نرخ نمونه است و تعرفهٔ رسمی نیست. هزینهٔ طرح ترافیک جداگانه محاسبه نشده است.</small></p>
+<button type="button" id="accept">تأیید آزمایشی</button>
+<button type="button" id="map">نمایش مسیر در نشان</button>
+<p id="status"></p>
+</section>
+<section><small>نسخهٔ آزمایشی؛ اتصال واقعی راننده و مسافر هنوز فعال نیست.</small></section>
+</main>
+<script>
+let trip=null;
+document.getElementById('trip').addEventListener('submit',function(e){
+e.preventDefault();
+let a=document.getElementById('a').value.trim(),b=document.getElementById('b').value.trim(),km=Number(document.getElementById('km').value);
+if(!a!b!Number.isFinite(km)||km<=0){alert('مبدأ، مقصد و مسافت معتبر وارد کنید.');return}
+let bag=document.getElementById('bag').checked;
+let base=km*10000,extra=bag?base*.05:0;
+trip={a,b};
+let f=n=>Math.round(n).toLocaleString('fa-IR')+' تومان';
+document.getElementById('details').textContent=
+'مبدأ: '+a+' | مقصد: '+b+' | مسافت: '+km+' کیلومتر | مسافران: '+document.getElementById('people').value+
+' | سرویس: '+document.getElementById('car').value+
+' | وسیله همراه: '+(bag?'بله':'خیر')+
+' | معلولیت: '+(document.getElementById('dis').checked?'بله':'خیر')+
+' | ویلچر: '+(document.getElementById('wheel').checked?'بله':'خیر')+
+' | طرح ترافیک: '+(document.getElementById('traffic').checked?'بله':'خیر')+
+' | کرایه پایه: '+f(base)+' | اضافه بار: '+f(extra)+' | برآورد: '+f(base+extra);
+document.getElementById('result').style.display='block';
+document.getElementById('status').textContent='';
 });
-
-document.getElementById("acceptButton").addEventListener("click", function() {
-  if (!latestTrip) {
-    statusText.textContent = "ابتدا فرم سفر را تکمیل کنید.";
-    return;
-  }
-
-  statusText.textContent =
-    "درخواست به‌صورت آزمایشی تأیید شد؛ هنوز به رانندهٔ واقعی ارسال نشده است.";
-});
-
-document.getElementById("mapButton").addEventListener("click", function() {
-  if (!latestTrip) {
-    statusText.textContent = "ابتدا مبدأ و مقصد را وارد و برآورد را محاسبه کنید.";
-    return;
-  }
-
-  const url = "https://neshan.org/maps?destination=" +
-    encodeURIComponent(latestTrip.destination) +
-    "&origin=" + encodeURIComponent(latestTrip.origin);
-
-  window.open(url, "_blank", "noopener,noreferrer");
-});
+document.getElementById('accept').onclick=function(){
+document.getElementById('status').textContent='تأیید آزمایشی؛ هنوز به راننده ارسال نشده است.'
+};
+document.getElementById('map').onclick=function(){
+if(!trip){alert('ابتدا فرم سفر را تکمیل کنید.');return}
+window.open('https://neshan.org/maps?destination='+encodeURIComponent(trip.b)+'&origin='+encodeURIComponent(trip.a),'_blank');
+};
 </script>
 </body>
 </html>
