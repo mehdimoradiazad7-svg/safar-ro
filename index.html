@@ -55,7 +55,7 @@ let trip=null;
 document.getElementById('trip').addEventListener('submit',function(e){
 e.preventDefault();
 let a=document.getElementById('a').value.trim(),b=document.getElementById('b').value.trim(),km=Number(document.getElementById('km').value);
-if(!a!b!Number.isFinite(km)||km<=0){alert('مبدأ، مقصد و مسافت معتبر وارد کنید.');return}
+if(!a  !b  !Number.isFinite(km) || km <= 0){alert('مبدأ، مقصد و مسافت معتبر وارد کنید.');return}
 let bag=document.getElementById('bag').checked;
 let base=km*10000,extra=bag?base*.05:0;
 trip={a,b};
