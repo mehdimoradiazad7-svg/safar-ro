@@ -192,6 +192,10 @@ HTML
       total += Math.floor(stopMinutes / 5) * 15000;
     }
 
+   JavaScript
+if (document.getElementById("hasLuggage").value === "yes") {
+  total = total * 1.05;
+}
     result.textContent =
       "هزینه برآوردی سفر: " +
       Math.round(total).toLocaleString("fa-IR") +
