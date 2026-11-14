@@ -90,7 +90,122 @@ if(isTaxi && (!Number.isInteger(passengers)  passengers < 1  passengers > 8)){
     } catch(error) {
       alert("ذخیره درخواست در مرورگر ممکن نشد.");
     }
+  });<label for="stopMinutes" id="stopLabel">توقف یا معطلی تاکسی (دقیقه)</label>
+      <input id="stopMinutes" type="number" min="0" step="1" value="0">
+
+      <label for="notes">توضیحات تکمیلی (اختیاری)</label>
+      <textarea id="notes" placeholder="توضیحات مربوط به سفر، بار یا شرایط ویژه"></textarea>
+
+      <button class="primary" type="submit">برآورد قیمت و ثبت آزمایشی</button>
+      <div id="fareResult" class="result hidden" aria-live="polite"></div>
+      <div id="tripActions" class="hidden">
+        <button id="mapButton" class="secondary" type="button">مسیریابی با نشان</button>
+        <button id="sendTripButton" class="primary" type="button">ارسال درخواست آزمایشی به بخش راننده</button>
+      </div>
+      <p class="small">
+        توجه: مسافت باید وارد شود. در این نسخه، مسافت به‌صورت دستی ثبت می‌شود؛
+        مسیریابی خودکار، تعرفه طرح ترافیک و اتصال واقعی به رانندگان هنوز فعال نیستند.
+      </p>
+    </form>
+  </section>
+
+  <section id="driverView" class="hidden">
+    <div class="card">
+      <h2>پنل آزمایشی راننده</h2>
+      <p class="small">این صفحه برای نمایش درخواست‌های ثبت‌شده در همین مرورگر است؛
+      ورود راننده و دریافت آنلاین سفرها هنوز پیاده‌سازی نشده است.</p>
+      <div id="driverRequests">هنوز درخواستی ثبت نشده است.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>نرخ‌های پایه هر کیلومتر</h2>
+    <p>🚕 تاکسی سواری: <strong>۲۰٬۰۰۰ تومان</strong></p>
+    <p>🛻 وانت پیکان: <strong>۱۰۰٬۰۰۰ تومان</strong></p>
+    <p>🚚 وانت نیسان: <strong>۱۵۰٬۰۰۰ تومان</strong></p>
+    <p>⏱️ توقف تاکسی: <strong>۱۵٬۰۰۰ تومان برای هر ۵ دقیقه کامل</strong></p>
+    <p class="small">بار همراه: ۵٪ اضافه بر کرایه پایه، مطابق قانون تعیین‌شده در پروژه.</p>
+  </section>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const rates = {
+    taxi: 20000,
+    peikan: 100000,
+    nissan: 150000
+  };
+
+  let currentTrip = null;
+
+  function money(n){
+    return Math.round(n).toLocaleString("fa-IR") + " تومان";
+  }
+
+  function selectedVehicle(){
+    return $("vehicle").value;
+  }
+
+  function syncService(){
+    const isTaxi = $("service").value === "taxi";
+
+    $("vehicleGroup").classList.toggle("hidden", isTaxi);
+    $("passengerCountGroup").classList.toggle("hidden", !isTaxi);
+    $("passengerOptions").classList.toggle("hidden", !isTaxi);
+    $("stopLabel").classList.toggle("hidden", !isTaxi);
+    $("stopMinutes").classList.toggle("hidden", !isTaxi);
+
+    $("vehicle").value = isTaxi ? "taxi" : "peikan";
+    $("passengerCount").required = isTaxi;
+    $("passengerCount").disabled = !isTaxi;
+    $("stopMinutes").disabled = !isTaxi;
+
+    $("fareResult").classList.add("hidden");
+    $("tripActions").classList.add("hidden");
+    currentTrip = null;
+  }
+
+  $("service").addEventListener("change", syncService);
+
+  $("passengerTab").addEventListener("click", () => {
+    $("passengerView").classList.remove("hidden");
+    $("driverView").classList.add("hidden");
+    $("passengerTab").classList.add("active");
+    $("driverTab").classList.remove("active");
   });
+
+  $("driverTab").addEventListener("click", () => {
+    $("driverView").classList.remove("hidden");
+    $("passengerView").classList.add("hidden");
+    $("driverTab").classList.add("active");
+    $("passengerTab").classList.remove("active");
+    renderRequests();
+  });
+
+  $("tripForm").addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const origin = $("origin").value.trim();
+    const destination = $("destination").value.trim();
+    const km = Number($("distance").value);
+    const isTaxi = $("service").value === "taxi";
+    const vehicle = isTaxi ? "taxi" : selectedVehicle();
+    const passengers = Number($("passengerCount").value);
+    const minutes = Number($("stopMinutes").value);
+
+    if(!origin || !destination){
+      alert("لطفاً مبدأ و مقصد را وارد کنید.");
+      return;
+    }
+
+    if(!Number.isFinite(km) || km <= 0){
+      alert("لطفاً مسافت معتبر و بیشتر از صفر وارد کنید.");
+      $("distance").focus();
+      return;
+    }
 
   function renderRequests(){
     let trips = [];
