@@ -1,112 +1,120 @@
-HTML
+if(isTaxi && (!Number.isInteger(passengers)  passengers < 1  passengers > 8)){
+      alert("تعداد مسافران باید بین ۱ تا ۸ نفر باشد.");
+      return;
+    }
 
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>سفر رو</title>
-<style>
-body{font-family:Tahoma;background:#f3f6fa;color:#202b3c;margin:0;line-height:2}
-header{background:#126b55;color:white;text-align:center;padding:20px}
-main{max-width:600px;margin:20px auto;padding:12px}
-section{background:white;padding:18px;margin-bottom:15px;border-radius:14px}
-label{display:block;margin-top:12px}
-input,select,button{box-sizing:border-box;width:100%;padding:12px;margin-top:6px;font:inherit;border-radius:8px;border:1px solid #ddd}
-.check{display:flex;align-items:center;gap:8px}
-.check input{width:auto}
-button{background:#126b55;color:white;border:0;cursor:pointer}
-#result{display:none}
-.price{font-size:22px;color:#126b55;font-weight:bold}
-small{color:#666}
-</style>
-</head>
-<body>
-<header><h1>سفر رو</h1><div>سفر آسان، امن و مطمئن</div></header>
-<main>
-<section>
-<h3>درخواست سفر</h3>
-<form id="trip">
-<label>مبدأ</label><input id="a" required placeholder="مبدأ سفر">
-<label>مقصد</label><input id="b" required placeholder="مقصد سفر">
-<label>مسافت تقریبی به کیلومتر</label><input id="km" type="number" min="0.1" step="0.1" required>
-<label>تعداد مسافران</label>
-<select id="people"><option>۱</option><option>۲</option><option>۳</option><option>۴</option></select>
-<label>نوع سرویس</label>
-<select id="car"><option value="سواری">خودروی سواری</option><option value="وانت">وانت و حمل وسیله</option></select>
-<label class="check"><input id="bag" type="checkbox"> وسیلهٔ همراه؛ ۵٪ افزایش کرایه</label>
-<label class="check"><input id="dis" type="checkbox"> مسافر دارای معلولیت است</label>
-<label class="check"><input id="wheel" type="checkbox"> ویلچر همراه مسافر است</label>
-<label class="check"><input id="traffic" type="checkbox"> مسیر شامل طرح ترافیک است</label>
-<button>محاسبهٔ کرایهٔ آزمایشی</button>
-</form>
-</section>
-<section id="result">
-<h3>برآورد سفر</h3><div id="details"></div>
-<p><small>نرخ نمونه است و تعرفهٔ رسمی نیست. هزینهٔ طرح ترافیک جداگانه محاسبه نشده است.</small></p>
-<button type="button" id="accept">تأیید آزمایشی</button>
-<button type="button" id="map">نمایش مسیر در نشان</button>
-<p id="status"></p>
-</section>
-<section><small>نسخهٔ آزمایشی؛ اتصال واقعی راننده و مسافر هنوز فعال نیست.</small></section>
-</main>
-<script>
-let trip=null;
-document.getElementById('trip').addEventListener('submit',function(e){
-e.preventDefault();
-let a=document.getElementById('a').value.trim(),b=document.getElementById('b').value.trim(),km=Number(document.getElementById('km').value);
-if(!a  !b  !Number.isFinite(km) || km <= 0){alert('مبدأ، مقصد و مسافت معتبر وارد کنید.');return}
-let bag=document.getElementById('bag').checked;
-let base=km*10000,extra=bag?base*.05:0;
-trip={a,b};
-let f=n=>Math.round(n).toLocaleString('fa-IR')+' تومان';
-document.getElementById('details').textContent=
-'مبدأ: '+a+' | مقصد: '+b+' | مسافت: '+km+' کیلومتر | مسافران: '+document.getElementById('people').value+
-' | سرویس: '+document.getElementById('car').value+
-' | وسیله همراه: '+(bag?'بله':'خیر')+
-' | معلولیت: '+(document.getElementById('dis').checked?'بله':'خیر')+
-' | ویلچر: '+(document.getElementById('wheel').checked?'بله':'خیر')+
-' | طرح ترافیک: '+(document.getElementById('traffic').checked?'بله':'خیر')+
-' | کرایه پایه: '+f(base)+' | اضافه بار: '+f(extra)+' | برآورد: '+f(base+extra);
-document.getElementById('result').style.display='block';
-document.getElementById('status').textContent='';
-});
-document.getElementById('accept').onclick=function(){
-document.getElementById('status').textContent='تأیید آزمایشی؛ هنوز به راننده ارسال نشده است.'
-};
-document.getElementById('map').onclick=function(){
-if(!trip){alert('ابتدا فرم سفر را تکمیل کنید.');return}
-window.open('https://neshan.org/maps?destination='+encodeURIComponent(trip.b)+'&origin='+encodeURIComponent(trip.a),'_blank');
-};
-</script>
-</body>
-HTML
+    if(isTaxi && (!Number.isFinite(minutes) || minutes < 0)){
+      alert("مدت توقف معتبر نیست.");
+      return;
+    }
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const buttons = document.querySelectorAll("button");
-  buttons.forEach(function (button) {
-    if (button.textContent.includes("برآورد")) {
-      button.type = "button";
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-        const inputs = document.querySelectorAll("input");
-        const distance = Number(inputs[2]?.value);
-        const result = document.getElementById("result");
-        if (!distance || distance <= 0) {
-          alert("لطفاً مسافت را به کیلومتر وارد کنید.");
-          return;
-        }
-        if (result) {
-          result.textContent = "برآورد آزمایشی کرایه: " +
-            (distance * 10000).toLocaleString("fa-IR") + " تومان";
-          result.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else {
-          alert("بخش نمایش قیمت پیدا نشد. باید کد را دقیق‌تر تنظیم کنیم.");
-        }
-      });
+    const rate = rates[vehicle];
+    const base = Math.round(km * rate);
+    const luggageExtra = isTaxi && $("luggage").checked
+      ? Math.round(base * 0.05) : 0;
+    const stopCost = isTaxi ? Math.floor(minutes / 5) * 15000 : 0;
+
+    // هزینه طرح ترافیک تعیین نشده؛ بنابراین خودکار مبلغی اضافه نمی‌شود.
+    const trafficExtra = 0;
+    const total = base + luggageExtra + stopCost + trafficExtra;
+
+    currentTrip = {
+      id: Date.now(),
+      origin,
+      destination,
+      km,
+      vehicle,
+      vehicleName: $("vehicle").selectedOptions[0].text,
+      passengers: isTaxi ? passengers : 0,
+      base,
+      luggageExtra,
+      stopCost,
+      traffic: isTaxi && $("traffic").checked,
+      disability: isTaxi && $("disability").checked,
+      wheelchair: isTaxi && $("wheelchair").checked,
+      notes: $("notes").value.trim(),
+      total,
+      status: "در انتظار پذیرش آزمایشی"
+    };
+
+    $("fareResult").innerHTML = 
+      <strong>برآورد کرایه</strong>
+      <hr>
+      مبدأ: ${escapeHTML(origin)}<br>
+      مقصد: ${escapeHTML(destination)}<br>
+      وسیله: ${escapeHTML(currentTrip.vehicleName)}<br>
+      مسافت: ${km.toLocaleString("fa-IR")} کیلومتر<br>
+      کرایه پایه: ${money(base)}<br>
+      اضافه بار همراه: ${money(luggageExtra)}<br>
+      هزینه توقف: ${money(stopCost)}<br>
+      هزینه طرح ترافیک: ${money(trafficExtra)}
+      <hr>
+      <div class="total">مبلغ نهایی: ${money(total)}</div>
+      <p class="small">این مبلغ برآورد آزمایشی بر اساس اطلاعات واردشده است.</p>
+    ;
+
+    $("fareResult").classList.remove("hidden");
+    $("tripActions").classList.remove("hidden");
+  });
+
+  function escapeHTML(value){
+    return String(value).replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;",
+      '"':"&quot;", "'":"&#39;"
+    }[ch]));
+  }
+
+  $("mapButton").addEventListener("click", () => {
+    if(!currentTrip) return;
+    const query = encodeURIComponent(
+      currentTrip.origin + " تا " + currentTrip.destination
+    );
+    window.open(
+      "https://www.google.com/maps/dir/?api=1&origin=" +
+      encodeURIComponent(currentTrip.origin) +
+      "&destination=" + encodeURIComponent(currentTrip.destination),
+      "_blank",
+      "noopener"
+    );
+  });
+
+  $("sendTripButton").addEventListener("click", () => {
+    if(!currentTrip) return;
+
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("safarRoTrips") || "[]");
+      saved.unshift(currentTrip);
+      sessionStorage.setItem("safarRoTrips", JSON.stringify(saved));
+      alert("درخواست در همین مرورگر به فهرست آزمایشی اضافه شد.");
+      renderRequests();
+    } catch(error) {
+      alert("ذخیره درخواست در مرورگر ممکن نشد.");
     }
   });
-});
-</script>
-</html>
+
+  function renderRequests(){
+    let trips = [];
+    try {
+      trips = JSON.parse(sessionStorage.getItem("safarRoTrips") || "[]");
+    } catch(error) {}
+
+    const area = $("driverRequests");
+    if(!trips.length){
+      area.textContent = "هنوز درخواستی ثبت نشده است.";
+      return;
+    }
+
+    area.innerHTML = trips.map((trip, index) => 
+      <div class="result">
+        <strong>درخواست ${index + 1}</strong><br>
+        مبدأ: ${escapeHTML(trip.origin)}<br>
+        مقصد: ${escapeHTML(trip.destination)}<br>
+        وسیله: ${escapeHTML(trip.vehicleName)}<br>
+        مسافت: ${trip.km.toLocaleString("fa-IR")} کیلومتر<br>
+        مبلغ: ${money(trip.total)}<br>
+        وضعیت: ${escapeHTML(trip.status)}
+        <button class="primary accept" type="button"
+          data-id="${trip.id}">پذیرش آزمایشی سفر</button>
+      </div>
+    ).join("");
+        
