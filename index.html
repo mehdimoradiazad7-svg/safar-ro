@@ -164,6 +164,17 @@ function showTripHistory(){
 alert('سابقه سفرها پس از اتصال به سرور نمایش داده می‌شود.');
 }
 </script>
+  HTML
+<section>
+<h2>پشتیبانی سفر رو</h2>
+<select id="supportType">
+<option value="complaint">ثبت شکایت</option>
+<option value="suggestion">ثبت پیشنهاد</option>
+<option value="help">درخواست راهنمایی</option>
+</select>
+<textarea id="supportText" placeholder="پیام خود را بنویسید"></textarea>
+<button type="button" onclick="alert('برای ارسال واقعی پیام، اتصال به سرور لازم است.')">ارسال پیام</button>
+</section>
 </main>
 </body>
 </html>
