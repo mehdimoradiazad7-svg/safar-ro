@@ -218,7 +218,29 @@ if(isTaxi && (!Number.isInteger(passengers)  passengers < 1  passengers > 8)){
       area.textContent = "هنوز درخواستی ثبت نشده است.";
       return;
     }
+area.querySelectorAll(".accept").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = Number(button.dataset.id);
+        try {
+          const saved = JSON.parse(sessionStorage.getItem("safarRoTrips") || "[]");
+          const trip = saved.find(item => item.id === id);
+          if(!trip) return;
+          trip.status = "پذیرفته‌شده در حالت آزمایشی";
+          sessionStorage.setItem("safarRoTrips", JSON.stringify(saved));
+          renderRequests();
+        } catch(error) {
+          alert("به‌روزرسانی وضعیت ممکن نشد.");
+        }
+      });
+    });
+  }
 
+  syncService();
+})();
+</script>
+</body>
+</html>
+            
     area.innerHTML = trips.map((trip, index) => 
       <div class="result">
         <strong>درخواست ${index + 1}</strong><br>
