@@ -129,6 +129,20 @@ document.getElementById('tripMessage').textContent=
 'برای ثبت واقعی سفر، اتصال به سرور لازم است.';
 }
 </script>
+  HTML
+<section>
+<h2>وضعیت اتصال</h2>
+<p id="networkStatus">در حال بررسی اینترنت...</p>
+</section>
+<script>
+function checkNetwork(){
+document.getElementById('networkStatus').textContent=
+navigator.onLine?'اتصال اینترنت برقرار است':'اینترنت قطع است';
+}
+window.addEventListener('online',checkNetwork);
+window.addEventListener('offline',checkNetwork);
+checkNetwork();
+</script>
 </main>
 </body>
 </html>
