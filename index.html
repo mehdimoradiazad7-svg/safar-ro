@@ -138,5 +138,48 @@ HTML
   </section>
 </main>
 
+HTML
+
+<script>
+  const calculateButton = document.getElementById("calculateButton");
+
+  calculateButton.addEventListener("click", function () {
+    const service = document.getElementById("service").value;
+    const distance = Number(document.getElementById("distance").value);
+    const stopMinutes = Number(document.getElementById("stopMinutes").value);
+    const result = document.getElementById("result");
+
+    if (!Number.isFinite(distance) || distance <= 0) {
+      result.textContent = "لطفاً مسافت سفر را به کیلومتر وارد کنید.";
+      return;
+    }
+
+    if (!Number.isFinite(stopMinutes) || stopMinutes < 0) {
+      result.textContent = "لطفاً مدت توقف را درست وارد کنید.";
+      return;
+    }
+
+    let rate = 0;
+
+    if (service === "taxi") {
+      rate = 20000;
+    } else if (service === "peikan") {
+      rate = 100000;
+    } else if (service === "nissan") {
+      rate = 150000;
+    }
+
+    let total = distance * rate;
+
+    if (service === "taxi") {
+      total += Math.floor(stopMinutes / 5) * 15000;
+    }
+
+    result.textContent =
+      "هزینه برآوردی سفر: " +
+      Math.round(total).toLocaleString("fa-IR") +
+      " تومان";
+  });
+</script>
 </body>
 </html>
