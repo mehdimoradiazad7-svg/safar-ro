@@ -99,8 +99,44 @@ HTML
 </head>
 <body>
 
-  <h1>سفر رو</h1>
-  <p>سامانه درخواست تاکسی و وانت بار</p>
+  HTML
+
+<header>
+  <h1>سفر رو 🚕</h1>
+  <p>سامانه درخواست تاکسی و وانت‌بار</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>درخواست سفر</h2>
+
+    <label for="service">نوع وسیله نقلیه</label>
+    <select id="service">
+      <option value="taxi">تاکسی سواری</option>
+      <option value="peikan">وانت پیکان</option>
+      <option value="nissan">وانت نیسان</option>
+    </select>
+
+    <label for="origin">مبدأ سفر</label>
+    <input id="origin" type="text" placeholder="آدرس مبدأ">
+
+    <label for="destination">مقصد سفر</label>
+    <input id="destination" type="text" placeholder="آدرس مقصد">
+
+    <label for="distance">مسافت سفر (کیلومتر)</label>
+    <input id="distance" type="number" min="0.1" step="0.1"
+           placeholder="مثلاً 5">
+
+    <label for="stopMinutes">مدت توقف تاکسی (دقیقه)</label>
+    <input id="stopMinutes" type="number" min="0" step="1" value="0">
+
+    <button type="button" id="calculateButton">
+      برآورد قیمت
+    </button>
+
+    <div id="result" class="note"></div>
+  </section>
+</main>
 
 </body>
 </html>
