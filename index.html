@@ -130,6 +130,23 @@ HTML
     <label for="stopMinutes">مدت توقف تاکسی (دقیقه)</label>
     <input id="stopMinutes" type="number" min="0" step="1" value="0">
 
+   HTML
+
+<label for="passengers">تعداد مسافران</label>
+<input id="passengers" type="number" min="1" step="1" value="1">
+
+<label for="hasLuggage">آیا بار یا وسیله همراه دارید؟</label>
+<select id="hasLuggage">
+  <option value="no">خیر</option>
+  <option value="yes">بله</option>
+</select>
+
+<label for="disability">وضعیت معلولیت یا ویلچر</label>
+<select id="disability">
+  <option value="none">بدون نیاز ویژه</option>
+  <option value="wheelchair">همراه داشتن ویلچر</option>
+  <option value="disability">مسافر دارای معلولیت</option>
+</select>
     <button type="button" id="calculateButton">
       برآورد قیمت
     </button>
