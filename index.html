@@ -115,6 +115,20 @@ document.getElementById('fareResult').textContent='کرایه تقریبی: '+(d
 <option value="wallet">پرداخت از کیف پول</option>
 </select>
 </section>
+  HTML
+<section>
+<h2>ثبت درخواست سفر</h2>
+<button type="button" onclick="requestTrip()">
+درخواست خودرو
+</button>
+<p id="tripMessage">پس از تکمیل اطلاعات، درخواست خود را ثبت کنید.</p>
+</section>
+<script>
+function requestTrip(){
+document.getElementById('tripMessage').textContent=
+'برای ثبت واقعی سفر، اتصال به سرور لازم است.';
+}
+</script>
 </main>
 </body>
 </html>
