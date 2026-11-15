@@ -8,7 +8,7 @@ HTML
   <title>سفر رو</title>
 </head>
 <body>
-</body>
+
 HTML
 
 <header>
@@ -32,5 +32,20 @@ HTML
   <h2>بخش راننده</h2>
   <p>ورود راننده به سامانه سفر رو</p>
   <button onclick="goHome()">بازگشت</button>
-</section></main>
+HTML
+
+</section>
+</main>
+<script>
+function showRole(role) {
+  document.getElementById('passenger').hidden = true;
+  document.getElementById('driver').hidden = true;
+  document.getElementById(role).hidden = false;
+}
+function goHome() {
+  document.getElementById('passenger').hidden = true;
+  document.getElementById('driver').hidden = true;
+}
+</script>
+</body>
 </html>
