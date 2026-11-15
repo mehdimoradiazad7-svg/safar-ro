@@ -4,179 +4,92 @@ HTML
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#116b50">
   <title>سفر رو | سامانه حمل‌ونقل</title>
-HTML
-
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;
-direction:rtl;background:#f3f7f5;color:#18352c}
-header{background:#116b50;color:white;padding:18px}
-main{padding:16px;max-width:600px;margin:auto}
-button{font:inherit;cursor:pointer}
-</style>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      direction: rtl;
+      background: #f3f7f5;
+      color: #18352c;
+      line-height: 1.8;
+    }
+    header {
+      background: #116b50;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+    main {
+      max-width: 720px;
+      margin: auto;
+      padding: 16px;
+    }
+    section {
+      background: white;
+      margin: 14px 0;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #18352c12;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 11px;
+      margin-top: 5px;
+      font: inherit;
+      border: 1px solid #cbd8d1;
+      border-radius: 8px;
+    }
+    button {
+      background: #116b50;
+      color: white;
+      border: 0;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .muted { color: #5a7066; font-size: .9rem; }
+    .result {
+      background: #edf7f1;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-wrap: anywhere;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 520px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-HTML
-
 <body>
-<header>
-  <h1>سفر رو</h1>
-  <p>سامانه هوشمند حمل‌ونقل استان</p>
-</header>
-<main>
-  <h2>خوش آمدید</h2>
-  <p>لطفاً نوع کاربری خود را انتخاب کنید.</p>
-HTML
-
-<div>
-  HTML
-
-<section>
-  <h3>ورود مسافر</h3>
-  <label for="passengerPhone">شماره تلفن همراه</label>
-  <input id="passengerPhone" type="tel" dir="ltr" placeholder="09123456789">
-  <button type="button">دریافت کد تأیید</button>
-  <h3>ورود راننده</h3>
-  <label for="driverPhone">شماره تلفن همراه</label>
-  <input id="driverPhone" type="tel" dir="ltr" placeholder="09123456789">
-  <button type="button">دریافت کد تأیید</button>
-</section>
-  
-</div>
-  HTML
-<section>
-<h2>انتخاب نوع سفر</h2>
-<label for="vehicle">وسیله نقلیه:</label>
-<select id="vehicle">
-<option value="sedan">سواری - کیلومتری ۲۰ هزار تومان</option>
-<option value="peykan">وانت پیکان - کیلومتری ۱۰۰ هزار تومان</option>
-<option value="nissan">نیسان - کیلومتری ۱۵۰ هزار تومان</option>
-</select>
-</section>
-  HTML
-<section>
-<h2>برآورد کرایه</h2>
-<label for="distance">مسافت سفر (کیلومتر):</label>
-<input id="distance" type="number" min="1" step="0.1" placeholder="مثلاً 10">
-<button type="button" onclick="calcFare()">محاسبه کرایه</button>
-<p id="fareResult">مبلغ کرایه نمایش داده می‌شود.</p>
-</section>
-<script>
-function calcFare(){
-const d=Number(document.getElementById('distance').value);
-const v=document.getElementById('vehicle').value;
-const r={sedan:20000,peykan:100000,nissan:150000};
-if(!Number.isFinite(d)||d<=0){alert('مسافت معتبر وارد کنید');return;}
-document.getElementById('fareResult').textContent='کرایه تقریبی: '+(d*r[v]).toLocaleString('fa-IR')+' تومان';
-}
-</script>
-  HTML
-<section>
-<h2>مبدأ و مقصد سفر</h2>
-<label for="origin">مبدأ:</label>
-<input id="origin" type="text" placeholder="آدرس مبدأ">
-<label for="destination">مقصد:</label>
-<input id="destination" type="text" placeholder="آدرس مقصد">
-</section>
-  HTML
-<section>
-<h2>جزئیات سفر</h2>
-<label for="passengers">تعداد مسافران:</label>
-<select id="passengers">
-<option value="1">۱ نفر</option>
-<option value="2">۲ نفر</option>
-<option value="3">۳ نفر</option>
-<option value="4">۴ نفر</option>
-</select>
-<label for="baggage">بار همراه:</label>
-<select id="baggage">
-<option value="no">بدون بار</option>
-<option value="yes">با بار (۵٪ هزینه بیشتر)</option>
-</select>
-</section>
-  HTML
-<section>
-<h2>امکانات موردنیاز</h2>
-<label for="wheelchair">نیاز به ویلچر:</label>
-<select id="wheelchair">
-<option value="no">خیر</option>
-<option value="yes">بله</option>
-</select>
-<p>برای نیاز به ویلچر هزینه اضافی دریافت نمی‌شود.</p>
-</section>
-  HTML
-<section>
-<h2>روش پرداخت</h2>
-<select id="payment">
-<option value="cash">پرداخت نقدی به راننده</option>
-<option value="online">پرداخت آنلاین</option>
-<option value="wallet">پرداخت از کیف پول</option>
-</select>
-</section>
-  HTML
-<section>
-<h2>ثبت درخواست سفر</h2>
-<button type="button" onclick="requestTrip()">
-درخواست خودرو
-</button>
-<p id="tripMessage">پس از تکمیل اطلاعات، درخواست خود را ثبت کنید.</p>
-</section>
-<script>
-function requestTrip(){
-document.getElementById('tripMessage').textContent=
-'برای ثبت واقعی سفر، اتصال به سرور لازم است.';
-}
-</script>
-  HTML
-<section>
-<h2>وضعیت اتصال</h2>
-<p id="networkStatus">در حال بررسی اینترنت...</p>
-</section>
-<script>
-function checkNetwork(){
-document.getElementById('networkStatus').textContent=
-navigator.onLine?'اتصال اینترنت برقرار است':'اینترنت قطع است';
-}
-window.addEventListener('online',checkNetwork);
-window.addEventListener('offline',checkNetwork);
-checkNetwork();
-</script>
-  HTML
-<section>
-<h2>امداد و امنیت</h2>
-<button type="button" onclick="alert('در مواقع خطر با شماره اضطراری محل خود تماس بگیرید.')">
-درخواست کمک اضطراری
-</button>
-<p>در وضعیت خطر، با خدمات اضطراری تماس بگیرید.</p>
-</section>
-  HTML
-<section>
-<h2>سابقه سفرها</h2>
-<p id="tripHistory">هنوز سفری ثبت نشده است.</p>
-<button type="button" onclick="showTripHistory()">
-مشاهده سابقه
-</button>
-</section>
-<script>
-function showTripHistory(){
-alert('سابقه سفرها پس از اتصال به سرور نمایش داده می‌شود.');
-}
-</script>
-  HTML
-<section>
-<h2>پشتیبانی سفر رو</h2>
-<select id="supportType">
-<option value="complaint">ثبت شکایت</option>
-<option value="suggestion">ثبت پیشنهاد</option>
-<option value="help">درخواست راهنمایی</option>
-</select>
-<textarea id="supportText" placeholder="پیام خود را بنویسید"></textarea>
-<button type="button" onclick="alert('برای ارسال واقعی پیام، اتصال به سرور لازم است.')">ارسال پیام</button>
-</section>
-</main>
+  <header>
+    <h1>سفر رو</h1>
+    <p>سامانه حمل‌ونقل استان</p>
+  </header>
+  <main>
+    <section>
+      <h2>به سفر رو خوش آمدید</h2>
+      <p>سامانهٔ یکپارچهٔ درخواست سفر برای رانندگان و مسافران</p>
+      <div class="row">
+        <button type="button">ورود مسافر</button>
+        <button type="button">ورود راننده</button>
+      </div>
+      <p class="muted">
+        ورود و ثبت‌نام واقعی در مراحل بعدی به احراز هویت امن،
+        سرور و سرویس پیامک متصل خواهد شد.
+      </p>
+    </section>
+  </main>
 </body>
 </html>
-  
-  
